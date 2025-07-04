@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>地震速報通知（震度1以上）</title>
+</head>
+<body>
+<script>
+// 通知許可の確認
+Notification.requestPermission();
+
+let lastTitle = "";  // 直前に通知した地震
+
+async function checkEarthquake() {
+  try {
+    const res = await fetch('https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml');
+    const text = await res.text();
+    const match = text.match(/<title>([^<]+)<\/title>/);
+
+    if (match) {
+      const title = match[1];
+
+      // 震度1〜7が含まれるか、前回と違う場合だけ通知
+      if (title !== lastTitle && /(震度[1-7])/g.test(title)) {
+        lastTitle = title;
+        new Notification('【地震速報】', { body: title });
+      }
+    }
+  } catch (e) {
+    console.error('地震情報の取得に失敗:', e);
+  }
+}
+
+// 起動時と30秒ごとにチェック
+checkEarthquake();
+setInterval(checkEarthquake, 30000);
+</script>
+</body>
+</html>
