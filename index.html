@@ -1,1153 +1,161 @@
 <!DOCTYPE html>
-<html lang="ja" class="scroll-smooth">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNOT & LOOP | パラコードクラフト</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Noto Sans JP, Montserrat) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind Custom Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-beige-light': '#F7F5F0',  /* 極めて薄いウォームベージュ */
-                        'brand-beige-mid': '#EAE4D9',    /* 中間の優しく落ち着いたベージュ */
-                        'brand-beige-dark': '#8E826D',   /* アクセント用のアンティークゴールド・ベージュ */
-                        'brand-green-deep': '#1B3B2B',   /* 深みのある豊かな森林グリーン */
-                        'brand-green-dark': '#11251B',   /* さらにダークなグリーン（テキスト・背景用） */
-                        'brand-charcoal': '#2C2A29',     /* 読みやすいダークチャコール */
-                    },
-                    fontFamily: {
-                        sans: ['Noto Sans JP', 'Montserrat', 'sans-serif'],
-                        serif: ['Georgia', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>Your Name Portfolio</title>
     <style>
-        /* スムーススクロールとフォントの微調整 */
+        /* 全体のリセットと基本設定 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Noto Sans JP', 'Montserrat', sans-serif;
-            color: #2C2A29;
-            background-color: #F7F5F0;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            color: #333;
+            background-color: #fcfcfc;
+            line-height: 1.6;
         }
-        /* スクロールバーのカスタマイズ */
-        ::-webkit-scrollbar {
-            width: 8px;
+        a {
+            color: #333;
+            text-decoration: none;
         }
-        ::-webkit-scrollbar-track {
-            background: #F7F5F0;
+
+        /* ヘッダー */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 10%;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #1B3B2B;
-            border-radius: 4px;
+        header h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a:hover {
+            color: #888;
+        }
+
+        /* メインビジュアル */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            color: #666;
+        }
+
+        /* コンテンツ共通レイアウト */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: #333;
+            margin: 10px auto 0;
+        }
+
+        /* 作品ギャラリー（グリッド表示） */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .work-item {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .work-item:hover {
+            transform: translateY(-5px);
+        }
+        .work-info {
+            padding: 20px;
+        }
+        .work-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .work-info p {
+            font-size: 14px;
+            color: #666;
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <!-- ヘッダー / ナビゲーション (共通) -->
-    <header class="sticky top-0 z-50 bg-brand-beige-light/90 backdrop-blur-md border-b border-brand-beige-mid transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- ロゴ -->
-                <a href="#" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                    <svg class="w-8 h-8 text-brand-green-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M12 3a9 9 0 019 9M12 3a9 9 0 00-9 9M12 21a9 9 0 009-9M12 21a9 9 0 01-9-9" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                    </svg>
-                    <span class="font-bold text-xl tracking-wider text-brand-green-deep font-sans">KNOT & LOOP</span>
-                </a>
-
-                <!-- デスクトップメニュー -->
-                <nav class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#about" class="text-brand-charcoal hover:text-brand-green-deep transition-colors duration-200">ABOUT</a>
-                    <a href="#gallery" class="text-brand-charcoal hover:text-brand-green-deep transition-colors duration-200">GALLERY</a>
-                    <a href="#weaving" class="text-brand-charcoal hover:text-brand-green-deep transition-colors duration-200">WEAVING (編み方)</a>
-                    <a href="#faq" class="text-brand-charcoal hover:text-brand-green-deep transition-colors duration-200">Q&A</a>
-                </nav>
-
-                <!-- 右側SNS/コンタクト簡易リンク -->
-                <div class="hidden md:flex items-center gap-4">
-                    <a href="https://www.instagram.com/happydesign0901_ai/" target="_blank" rel="noopener noreferrer" class="p-2 text-brand-green-deep hover:text-brand-beige-dark transition-colors animate-pulse" aria-label="Instagram">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                        </svg>
-                    </a>
-                    <a href="#about" class="bg-brand-green-deep text-brand-beige-light px-5 py-2.5 rounded text-sm tracking-wider font-semibold hover:bg-brand-green-dark transition-all duration-300 shadow-sm">
-                        作品を見る
-                    </a>
-                </div>
-
-                <!-- モバイルメニューボタン -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-brand-green-deep focus:outline-none" aria-label="メニューを開く">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path id="menu-icon-open" class="block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- モバイルドロップダウンメニュー -->
-        <div id="mobile-menu" class="hidden md:hidden bg-brand-beige-light border-b border-brand-beige-mid animate-fade-in">
-            <div class="px-4 pt-2 pb-6 space-y-3">
-                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-brand-charcoal hover:bg-brand-beige-mid/50 hover:text-brand-green-deep transition-all">ABOUT</a>
-                <a href="#gallery" class="block px-3 py-2 rounded-md text-base font-medium text-brand-charcoal hover:bg-brand-beige-mid/50 hover:text-brand-green-deep transition-all">GALLERY</a>
-                <a href="#weaving" class="block px-3 py-2 rounded-md text-base font-medium text-brand-charcoal hover:bg-brand-beige-mid/50 hover:text-brand-green-deep transition-all">WEAVING (編み方)</a>
-                <a href="#faq" class="block px-3 py-2 rounded-md text-base font-medium text-brand-charcoal hover:bg-brand-beige-mid/50 hover:text-brand-green-deep transition-all">Q&A</a>
-                <div class="pt-4 border-t border-brand-beige-mid flex items-center justify-between px-3">
-                    <a href="https://www.instagram.com/happydesign0901_ai/" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-green-deep font-bold underline">Instagramはこちら</a>
-                    <a href="#about" class="bg-brand-green-deep text-brand-beige-light px-4 py-2 rounded text-sm font-semibold hover:bg-brand-green-dark transition-all">作品を見る</a>
-                </div>
-            </div>
-        </div>
+    <header>
+        <h1>My Portfolio</h1>
+        <nav>
+            <ul>
+                <li><a href="#works">Works</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- ==================== メインホームページ画面 ==================== -->
-    <div id="homepage-view" class="block">
-        <!-- メインビジュアル（ヒーローセクション） -->
-        <section class="relative min-h-[85vh] flex items-center justify-center py-20 bg-brand-beige-light overflow-hidden">
-            <!-- 背景用のオーガニックな幾何学シェイプ -->
-            <div class="absolute inset-0 z-0 opacity-15">
-                <svg class="absolute -top-24 -left-20 w-[600px] h-[600px] text-brand-green-deep" fill="currentColor" viewBox="0 0 100 100">
-                    <path d="M30,-38C38.3,-27.1,44.2,-15.5,46.7,-3.1C49.2,9.3,48.3,22.4,41.9,32.4C35.5,42.4,23.6,49.2,10.7,52.2C-2.2,55.1,-16.1,54.1,-27.8,47.8C-39.6,41.5,-49.2,29.9,-53.4,16.2C-57.6,2.5,-56.3,-13.3,-49.5,-25.7C-42.7,-38.1,-30.3,-47.2,-17.4,-51C-4.5,-54.8,8.8,-53.3,30,-38Z" transform="translate(50 50)" />
-                </svg>
-                <svg class="absolute -bottom-48 -right-24 w-[700px] h-[700px] text-brand-beige-dark" fill="currentColor" viewBox="0 0 100 100">
-                    <path d="M42.2,-55.3C52.7,-44.6,57.7,-28.5,60.6,-12.3C63.6,3.9,64.4,20.2,57.4,32.7C50.4,45.2,35.5,53.8,19.9,58.3C4.2,62.8,-12.3,63.2,-27.1,57.4C-41.9,51.6,-55.1,39.6,-61.6,24.5C-68.1,9.4,-67.9,-8.8,-61.1,-24.1C-54.3,-39.4,-41,-51.9,-26.4,-60.7C-11.9,-69.5,3.9,-74.6,42.2,-55.3Z" transform="translate(50 50)" />
-                </svg>
-            </div>
+    <section class="hero">
+        <h2>Welcome to My Creative Space</h2>
+        <p>ポートフォリオを公開します</p>
+    </section>
 
-            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                <!-- テキストエリア -->
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <span class="inline-block px-4 py-1.5 bg-brand-green-deep text-brand-beige-light text-xs tracking-widest font-semibold rounded-full uppercase">Paracord Craft Site</span>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-green-deep leading-tight font-sans">
-                        結ぶ、編む、繋がる。<br>
-                        <span class="text-brand-beige-dark font-serif font-light italic">Art of Knotting.</span>
-                    </h1>
-                    <p class="text-base sm:text-lg text-brand-charcoal max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
-                        米軍のパラシュートから生まれた驚くほどタフなコード、パラコード。カラフルで実用性に満ちたコードを一本一本手作業で編み込み、あなたの日常に寄り添う個性的なクラフトへと昇華させます。
-                    </p>
-                    <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="#gallery" class="bg-brand-green-deep text-brand-beige-light text-center px-8 py-4 rounded-lg font-semibold hover:bg-brand-green-dark transition-all duration-300 shadow-md transform hover:-translate-y-0.5">
-                            作品ギャラリーを見る
-                        </a>
-                        <a href="#weaving" class="bg-transparent border-2 border-brand-green-deep text-brand-green-deep text-center px-8 py-4 rounded-lg font-semibold hover:bg-brand-green-deep hover:text-brand-beige-light transition-all duration-300">
-                            編み方を学ぶ
-                        </a>
-                    </div>
+    <section id="works" class="container">
+        <h2 class="section-title">Works</h2>
+        <div class="gallery">
+            
+            <div class="work-item">
+                <div style="position: relative; width: 100%; height: 0; padding-top: 56.25%;">
+                    <iframe src="https://www.youtube.com/embed/uszHWi5tmb0" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                    </iframe>
                 </div>
-
-                <!-- ビジュアルイメージエリア -->
-                <div class="lg:col-span-5 relative flex justify-center items-center">
-                    <!-- 装飾枠 -->
-                    <div class="absolute inset-4 border-2 border-brand-beige-dark rounded-2xl transform translate-x-4 translate-y-4 z-0"></div>
-                    <!-- メイングラフィック -->
-                    <div class="relative w-full aspect-square max-w-[400px] bg-brand-green-deep rounded-2xl shadow-2xl flex flex-col justify-between p-8 text-brand-beige-light z-10 overflow-hidden">
-                        <div class="absolute -right-16 -top-16 w-48 h-48 bg-brand-beige-dark/30 rounded-full blur-2xl"></div>
-                        <div class="flex justify-between items-start">
-                            <span class="text-xs uppercase tracking-widest text-brand-beige-mid">Craftsmanship</span>
-                            <span class="text-xs text-brand-beige-dark font-bold font-serif">Est. 2026</span>
-                        </div>
-                        
-                        <!-- パラコードを模した抽象デザイン -->
-                        <div class="my-auto py-6 flex justify-center">
-                            <svg class="w-48 h-48 text-brand-beige-mid animate-pulse" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M30 20 C 35 10, 45 10, 50 20 C 55 30, 65 30, 70 20 C 75 10, 85 10, 90 20" stroke-linecap="round"/>
-                                <path d="M10 40 C 15 30, 25 30, 30 40 C 35 50, 45 50, 50 40 C 55 30, 65 30, 70 40 C 75 50, 85 50, 90 40" stroke-linecap="round" stroke-dasharray="2,2"/>
-                                <path d="M10 60 C 15 50, 25 50, 30 60 C 35 70, 45 70, 50 60 C 55 50, 65 50, 70 60 C 75 70, 85 70, 90 60" stroke-linecap="round"/>
-                                <path d="M30 80 C 35 70, 45 70, 50 80 C 55 90, 65 90, 70 80 C 75 70, 85 70, 90 80" stroke-linecap="round" stroke-dasharray="2,2"/>
-                                <circle cx="50" cy="50" r="12" fill="#1B3B2B" stroke="#EAE4D9" stroke-width="3"/>
-                            </svg>
-                        </div>
-
-                        <div class="text-left space-y-1">
-                            <h3 class="text-lg font-bold font-serif text-brand-beige-light">HANDMADE WITH CARE</h3>
-                            <p class="text-xs text-brand-beige-mid">100% Nylon Durable Paracord</p>
-                        </div>
-                    </div>
+                <div class="work-info">
+                    <h3>動画作品タイトル</h3>
+                    <p>YouTubeにアップロードした動画作品の解説や、制作に使用したソフト（After Effects, Premiere Proなど）、担当した役割（編集、アニメーションなど）をここに記載します。</p>
                 </div>
             </div>
-        </section>
-
-        <!-- パラコード紹介 (About Section) -->
-        <section id="about" class="py-24 bg-brand-beige-mid/30 relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 class="text-xs tracking-widest text-brand-beige-dark font-bold uppercase">What is Paracord?</h2>
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">丈夫でカラフル、無限の可能性</p>
-                    <div class="w-16 h-1 bg-brand-green-deep mx-auto mt-4 rounded"></div>
-                </div>
-
-                <!-- 特徴3カラム -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    <!-- 特徴1 -->
-                    <div class="bg-brand-beige-light p-8 rounded-2xl shadow-sm border border-brand-beige-mid/50 hover:shadow-md transition-all duration-300">
-                        <div class="w-12 h-12 bg-brand-green-deep/10 text-brand-green-deep rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-brand-green-deep mb-3">驚異の耐久性</h3>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            元々はパラシュートの吊り下げ紐として開発されたコード。細い見た目ながら、耐荷重は約250kgに達するものもあり、引張強度や摩擦に非常に強い性質を持っています。
-                        </p>
-                    </div>
-
-                    <!-- 特徴2 -->
-                    <div class="bg-brand-beige-light p-8 rounded-2xl shadow-sm border border-brand-beige-mid/50 hover:shadow-md transition-all duration-300">
-                        <div class="w-12 h-12 bg-brand-green-deep/10 text-brand-green-deep rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-brand-green-deep mb-3">豊富なカラーと表現力</h3>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            単色からマルチカラー、反射素材入りなど、数百種類のバリエーションが存在します。独自の組み合わせや編み目の調整で、無限のアートワークが誕生します。
-                        </p>
-                    </div>
-
-                    <!-- 特徴3 -->
-                    <div class="bg-brand-beige-light p-8 rounded-2xl shadow-sm border border-brand-beige-mid/50 hover:shadow-md transition-all duration-300">
-                        <div class="w-12 h-12 bg-brand-green-deep/10 text-brand-green-deep rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-brand-green-deep mb-3">日常から万が一の防災まで</h3>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            アクセサリー、スマホストラップ、ペット首輪など日常を彩るだけでありません。災害時には編み込みを解いて「1本の頑丈なロープ」として救助や止血に役立てられます。
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ギャラリーセクション (Gallery Section) -->
-        <section id="gallery" class="py-24 bg-brand-beige-light">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 class="text-xs tracking-widest text-brand-beige-dark font-bold uppercase">Our Creations</h2>
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">パラコードのある暮らし</p>
-                    <p class="text-sm text-brand-charcoal leading-relaxed font-light">日常に溶け込み、実用的で美しい作品コレクションです。カードをクリックして作り方を学びましょう。</p>
-                    <div class="w-16 h-1 bg-brand-green-deep mx-auto mt-4 rounded"></div>
-                </div>
-
-                <!-- ギャラリーグリッド -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- アイテム1: コブラキーホルダー -->
-                    <div onclick="window.location.hash='#/weaving/cobra'" class="group cursor-pointer overflow-hidden rounded-2xl bg-brand-beige-light border border-brand-beige-mid hover:shadow-xl hover:border-brand-green-deep/30 transition-all duration-300">
-                        <div class="relative overflow-hidden aspect-square bg-brand-green-deep/10 flex items-center justify-center">
-                            <!-- 代替イラスト（SVG） -->
-                            <svg class="w-3/4 h-3/4 text-brand-green-deep group-hover:scale-110 transition-transform duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="35" y="10" width="30" height="50" rx="15" fill="#1B3B2B" opacity="0.1"/>
-                                <path d="M50 10 L50 60" stroke-width="3"/>
-                                <path d="M40 20 L60 20 M38 28 L62 28 M40 36 L60 36 M38 44 L62 44 M40 52 L60 52" stroke-width="2"/>
-                                <circle cx="50" cy="72" r="12" stroke-width="2"/>
-                                <circle cx="50" cy="72" r="8" stroke-width="1"/>
-                                <path d="M56 78 L75 88 L70 72 Z" fill="#8E826D" stroke="none"/>
-                            </svg>
-                            <span class="absolute bottom-4 left-4 bg-brand-beige-light/90 text-brand-green-deep text-[10px] tracking-widest font-bold px-2.5 py-1 rounded-md uppercase">KEYRING</span>
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-lg font-bold text-brand-green-deep mb-1 group-hover:text-brand-beige-dark transition-colors">コブラ・キーホルダー</h4>
-                            <p class="text-xs text-brand-beige-dark font-semibold mb-3">ミリタリーグリーン × サンドベージュ</p>
-                            <p class="text-sm text-brand-charcoal font-light leading-relaxed mb-4">
-                                定番のコブラ編み（平編み）で編み上げたコンパクトなキーホルダー。バッグや鍵のアクセントとして存在感を放ちます。
-                            </p>
-                            <span class="inline-flex items-center text-xs font-bold text-brand-green-deep group-hover:translate-x-2 transition-transform duration-300">
-                                コブラ編みの手順を見る <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- アイテム2: スマホストラップ -->
-                    <div onclick="window.location.hash='#/weaving/snake'" class="group cursor-pointer overflow-hidden rounded-2xl bg-brand-beige-light border border-brand-beige-mid hover:shadow-xl hover:border-brand-green-deep/30 transition-all duration-300">
-                        <div class="relative overflow-hidden aspect-square bg-brand-beige-mid/30 flex items-center justify-center">
-                            <!-- 代替イラスト（SVG） -->
-                            <svg class="w-3/4 h-3/4 text-brand-green-deep group-hover:scale-110 transition-transform duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M50 15 C 20 15, 20 85, 50 85 C 80 85, 80 15, 50 15" stroke-width="2" stroke-dasharray="1,1"/>
-                                <rect x="44" y="80" width="12" height="12" rx="2" fill="#8E826D" stroke="none"/>
-                                <rect x="35" y="92" width="30" height="5" rx="1" fill="#1B3B2B"/>
-                                <path d="M46 30 C50 35, 50 35, 54 30 C50 25, 50 25, 46 30" stroke-width="2"/>
-                                <path d="M46 45 C50 50, 50 50, 54 45 C50 40, 50 40, 46 45" stroke-width="2"/>
-                            </svg>
-                            <span class="absolute bottom-4 left-4 bg-brand-beige-light/90 text-brand-green-deep text-[10px] tracking-widest font-bold px-2.5 py-1 rounded-md uppercase">STRAP</span>
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-lg font-bold text-brand-green-deep mb-1 group-hover:text-brand-beige-dark transition-colors">ショルダースマホストラップ</h4>
-                            <p class="text-xs text-brand-beige-dark font-semibold mb-3">アースミックス × カフェオレ</p>
-                            <p class="text-sm text-brand-charcoal font-light leading-relaxed mb-4">
-                                肩掛けできる頑丈なスマホショルダー。丸みと伸縮性のあるスネークノットを要所に使用し、美しさと実用性を両立させました。
-                            </p>
-                            <span class="inline-flex items-center text-xs font-bold text-brand-green-deep group-hover:translate-x-2 transition-transform duration-300">
-                                スネークノットの手順を見る <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- アイテム3: ドッグカラー -->
-                    <div onclick="window.location.hash='#/weaving/fishtail'" class="group cursor-pointer overflow-hidden rounded-2xl bg-brand-beige-light border border-brand-beige-mid hover:shadow-xl hover:border-brand-green-deep/30 transition-all duration-300">
-                        <div class="relative overflow-hidden aspect-square bg-brand-green-deep/10 flex items-center justify-center">
-                            <!-- 代替イラスト（SVG） -->
-                            <svg class="w-3/4 h-3/4 text-brand-green-deep group-hover:scale-110 transition-transform duration-500" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="50" cy="50" r="32" stroke-width="4" stroke-dasharray="6,3"/>
-                                <rect x="42" y="10" width="16" height="12" rx="3" fill="#1B3B2B"/>
-                                <rect x="46" y="12" width="8" height="8" rx="1" fill="#F7F5F0"/>
-                            </svg>
-                            <span class="absolute bottom-4 left-4 bg-brand-beige-light/90 text-brand-green-deep text-[10px] tracking-widest font-bold px-2.5 py-1 rounded-md uppercase">DOG COLLAR</span>
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-lg font-bold text-brand-green-deep mb-1 group-hover:text-brand-beige-dark transition-colors">アウトドアドッグカラー (首輪)</h4>
-                            <p class="text-xs text-brand-beige-dark font-semibold mb-3">マスタードゴールド × ディープフォレスト</p>
-                            <p class="text-sm text-brand-charcoal font-light leading-relaxed mb-4">
-                                愛犬に優しいソフトな肌触りと強靭さを兼ね備えた首輪。緻密でフラットに織り上がるフィッシュテール編みを採用しています。
-                            </p>
-                            <span class="inline-flex items-center text-xs font-bold text-brand-green-deep group-hover:translate-x-2 transition-transform duration-300">
-                                フィッシュテールの手順を見る <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 編み方の紹介 (Weaving Tutorial Section) -->
-        <section id="weaving" class="py-24 bg-brand-beige-mid/30 relative">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 class="text-xs tracking-widest text-brand-beige-dark font-bold uppercase">Tutorials & Styles</h2>
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">パラコードの代表的な編み方</p>
-                    <p class="text-sm text-brand-charcoal leading-relaxed font-light">初心者からチャレンジできる、基本かつおしゃれな3種の結びをご紹介します。</p>
-                    <div class="w-16 h-1 bg-brand-green-deep mx-auto mt-4 rounded"></div>
-                </div>
-
-                <!-- 編み方詳細タブ/カード -->
-                <div class="space-y-12">
-                    <!-- 編み方 1 -->
-                    <div class="bg-brand-beige-light rounded-3xl p-6 sm:p-10 border border-brand-beige-mid flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-                        <div class="w-full lg:w-1/3 flex flex-col items-center">
-                            <span class="text-4xl font-serif text-brand-beige-dark font-bold mb-2">01</span>
-                            <h3 class="text-2xl font-bold text-brand-green-deep mb-2">コブラ編み (平編み)</h3>
-                            <span class="px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-semibold rounded-full mb-6">難易度：★☆☆ (初心者向け)</span>
-                            <!-- コブラ編みのイラスト -->
-                            <div class="w-48 h-48 bg-brand-beige-mid/20 rounded-full flex items-center justify-center p-4">
-                                <svg class="w-full h-full text-brand-green-deep" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M50 10 L50 90" stroke-width="4" stroke="#8E826D"/>
-                                    <path d="M20 30 C 50 30, 30 50, 80 50 M80 50 C 50 50, 70 70, 20 70" stroke-width="3"/>
-                                    <path d="M80 30 C 50 30, 70 50, 20 50 M20 50 C 50 50, 30 70, 80 70" stroke-width="3" stroke-dasharray="3,3"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-2/3 space-y-6">
-                            <div>
-                                <h4 class="text-lg font-bold text-brand-green-deep mb-2">特徴と魅力</h4>
-                                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                                    「ソロモンノット」とも呼ばれる最も代表的な編み方です。厚みが程よくあり頑丈なため、ブレスレットやカメラストラップに広く使われています。
-                                </p>
-                            </div>
-                            <div class="pt-2">
-                                <a href="#/weaving/cobra" class="inline-flex items-center px-6 py-3 bg-brand-green-deep text-brand-beige-light rounded-lg text-sm font-semibold hover:bg-brand-green-dark transition-colors duration-300 shadow-sm">
-                                    写真・図解付きの詳しい編み方を見る
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 編み方 2 -->
-                    <div class="bg-brand-beige-light rounded-3xl p-6 sm:p-10 border border-brand-beige-mid flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-                        <div class="w-full lg:w-1/3 flex flex-col items-center">
-                            <span class="text-4xl font-serif text-brand-beige-dark font-bold mb-2">02</span>
-                            <h3 class="text-2xl font-bold text-brand-green-deep mb-2">スネークノット (丸編み)</h3>
-                            <span class="px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-semibold rounded-full mb-6">難易度：★★☆ (少し慣れた人向け)</span>
-                            <!-- スネークノットのイラスト -->
-                            <div class="w-48 h-48 bg-brand-beige-mid/20 rounded-full flex items-center justify-center p-4">
-                                <svg class="w-full h-full text-brand-green-deep" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M40 20 Q50 30, 60 20 T40 40 T60 60 T40 80" stroke-width="4"/>
-                                    <path d="M60 20 Q50 10, 40 20 T60 40 T40 60 T60 80" stroke-width="4" stroke-dasharray="3,3" stroke="#8E826D"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-2/3 space-y-6">
-                            <div>
-                                <h4 class="text-lg font-bold text-brand-green-deep mb-2">特徴と魅力</h4>
-                                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                                    まるでヘビの鱗のように連なった丸みのある立体的な形状に仕上がる編み方です。キーホルダーの持ち手やスマホストラップに最適です。
-                                </p>
-                            </div>
-                            <div class="pt-2">
-                                <a href="#/weaving/snake" class="inline-flex items-center px-6 py-3 bg-brand-green-deep text-brand-beige-light rounded-lg text-sm font-semibold hover:bg-brand-green-dark transition-colors duration-300 shadow-sm">
-                                    写真・図解付きの詳しい編み方を見る
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 編み方 3 -->
-                    <div class="bg-brand-beige-light rounded-3xl p-6 sm:p-10 border border-brand-beige-mid flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-                        <div class="w-full lg:w-1/3 flex flex-col items-center">
-                            <span class="text-4xl font-serif text-brand-beige-dark font-bold mb-2">03</span>
-                            <h3 class="text-2xl font-bold text-brand-green-deep mb-2">フィッシュテール</h3>
-                            <span class="px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-semibold rounded-full mb-6">難易度：★★☆ (中級者向け)</span>
-                            <!-- フィッシュテールのイラスト -->
-                            <div class="w-48 h-48 bg-brand-beige-mid/20 rounded-full flex items-center justify-center p-4">
-                                <svg class="w-full h-full text-brand-green-deep" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M50 15 L50 85" stroke-width="2" stroke="#8E826D" opacity="0.3"/>
-                                    <path d="M30 30 L50 40 L70 30" stroke-width="3"/>
-                                    <path d="M30 42 L50 52 L70 42" stroke-width="3" stroke-dasharray="2,2"/>
-                                    <path d="M30 54 L50 64 L70 54" stroke-width="3"/>
-                                    <path d="M30 66 L50 76 L70 66" stroke-width="3" stroke-dasharray="2,2"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-2/3 space-y-6">
-                            <div>
-                                <h4 class="text-lg font-bold text-brand-green-deep mb-2">特徴と魅力</h4>
-                                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                                    魚の尻尾のような細かい織り目が美しく斜めに連なる編み方。スマートにまとまり、愛犬の首輪や腕時計ベルト等に非常に人気です。
-                                </p>
-                            </div>
-                            <div class="pt-2">
-                                <a href="#/weaving/fishtail" class="inline-flex items-center px-6 py-3 bg-brand-green-deep text-brand-beige-light rounded-lg text-sm font-semibold hover:bg-brand-green-dark transition-colors duration-300 shadow-sm">
-                                    写真・図解付きの詳しい編み方を見る
-                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Q&A セクション (FAQ Section) -->
-        <section id="faq" class="py-24 bg-brand-beige-light">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16 space-y-4">
-                    <h2 class="text-xs tracking-widest text-brand-beige-dark font-bold uppercase">FAQ</h2>
-                    <p class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">よくあるご質問</p>
-                    <div class="w-16 h-1 bg-brand-green-deep mx-auto mt-4 rounded"></div>
-                </div>
-
-                <!-- アコーディオン -->
-                <div class="space-y-4">
-                    <!-- 質問 1 -->
-                    <div class="border border-brand-beige-mid rounded-2xl overflow-hidden bg-brand-beige-light transition-all duration-300">
-                        <button class="faq-toggle-btn w-full flex items-center justify-between p-6 text-left text-brand-green-deep font-bold text-base sm:text-lg focus:outline-none transition-colors duration-200 hover:bg-brand-beige-mid/20">
-                            <span>Q1. パラコードクラフト初心者ですが、最初に必要な道具は何ですか？</span>
-                            <svg class="faq-icon w-5 h-5 text-brand-green-deep transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="faq-content hidden border-t border-brand-beige-mid/40 bg-brand-beige-light/50">
-                            <p class="p-6 text-sm sm:text-base text-brand-charcoal leading-relaxed font-light">
-                                まずは「パラコード（お好みの色）」に加えて、「ハサミ」「ライター（またはターボライター）」「メジャー（定規）」があれば始められます。<br>
-                                パラコードのカット断面はほつれやすいため、切った後にライターの火で軽くあぶり、先端を溶かして丸める（焼き止め）作業を行います。これだけで十分な耐久性を維持したクオリティの高い作品が作れます。
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- 質問 2 -->
-                    <div class="border border-brand-beige-mid rounded-2xl overflow-hidden bg-brand-beige-light transition-all duration-300">
-                        <button class="faq-toggle-btn w-full flex items-center justify-between p-6 text-left text-brand-green-deep font-bold text-base sm:text-lg focus:outline-none transition-colors duration-200 hover:bg-brand-beige-mid/20">
-                            <span>Q2. コードが汚れてしまった場合のお手入れ方法を教えてください。</span>
-                            <svg class="faq-icon w-5 h-5 text-brand-green-deep transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="faq-content hidden border-t border-brand-beige-mid/40 bg-brand-beige-light/50">
-                            <p class="p-6 text-sm sm:text-base text-brand-charcoal leading-relaxed font-light">
-                                パラコードの多くはナイロンまたはポリエステル製ですので、丸洗いが可能です。<br>
-                                ぬるま湯に中性洗剤（おしゃれ着用洗剤など）を薄く溶かし、優しく押し洗い（手洗い）をしてください。その後よくすすぎ、風通しの良い日陰で十分に自然乾燥させてください。※熱に弱いため、熱湯やドライヤーの温風での急速乾燥、アイロンは避けてください。
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- 質問 3 -->
-                    <div class="border border-brand-beige-mid rounded-2xl overflow-hidden bg-brand-beige-light transition-all duration-300">
-                        <button class="faq-toggle-btn w-full flex items-center justify-between p-6 text-left text-brand-green-deep font-bold text-base sm:text-lg focus:outline-none transition-colors duration-200 hover:bg-brand-beige-mid/20">
-                            <span>Q3. 異なる太さのパラコードを混ぜて編むことはできますか？</span>
-                            <svg class="faq-icon w-5 h-5 text-brand-green-deep transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="faq-content hidden border-t border-brand-beige-mid/40 bg-brand-beige-light/50">
-                            <p class="p-6 text-sm sm:text-base text-brand-charcoal leading-relaxed font-light">
-                                はい、可能です。例えば、芯になるコードに太い「4mm幅（4mm 550パラコード）」を使用し、編み紐に極細の「2mm幅（マイクロコード・タクティカルコード）」を使用することで、ディテールに変化を持たせた面白い表情のデザインが仕上がります。<br>
-                                太さを合わせることで整った質感になりますが、あえてミックスするのもハンドメイドならではの魅力です。
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- 質問 4 -->
-                    <div class="border border-brand-beige-mid rounded-2xl overflow-hidden bg-brand-beige-light transition-all duration-300">
-                        <button class="faq-toggle-btn w-full flex items-center justify-between p-6 text-left text-brand-green-deep font-bold text-base sm:text-lg focus:outline-none transition-colors duration-200 hover:bg-brand-beige-mid/20">
-                            <span>Q4. 個人でのオーダーメイドや色変更の相談は受けていますか？</span>
-                            <svg class="faq-icon w-5 h-5 text-brand-green-deep transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        <div class="faq-content hidden border-t border-brand-beige-mid/40 bg-brand-beige-light/50">
-                            <p class="p-6 text-sm sm:text-base text-brand-charcoal leading-relaxed font-light">
-                                はい、喜んで承っております。お好みの配色（例えば今回使用している「深みのあるグリーン」と「ナチュラルなベージュ」など）や、取り付けたい金具（スマホクリップやカラビナなど）、腕周り・首周りの長さに合わせたカスタムオーダーが可能です。お気軽に公式<a href="https://www.instagram.com/happydesign0901_ai/" target="_blank" rel="noopener noreferrer" class="text-brand-green-deep font-semibold underline hover:text-brand-beige-dark transition-colors">InstagramのDM</a>よりお声がけください！
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ==================== 詳細画面 1: コブラ編み (Cobra Weaving Detail) ==================== -->
-    <div id="detail-cobra-view" class="hidden min-h-screen bg-brand-beige-light py-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- パンくずリスト & 戻るボタン -->
-            <nav class="flex items-center justify-between mb-8 pb-4 border-b border-brand-beige-mid">
-                <div class="flex items-center space-x-2 text-xs sm:text-sm text-brand-beige-dark font-medium">
-                    <a href="#" class="hover:text-brand-green-deep transition-colors">ホーム</a>
-                    <span>/</span>
-                    <a href="#weaving" class="hover:text-brand-green-deep transition-colors">編み方紹介</a>
-                    <span>/</span>
-                    <span class="text-brand-green-deep font-semibold">コブラ編み詳細</span>
-                </div>
-                <a href="#" class="inline-flex items-center text-xs sm:text-sm font-bold text-brand-green-deep hover:text-brand-beige-dark transition-colors">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    ホームに戻る
-                </a>
-            </nav>
-
-            <!-- タイトル & 概要 -->
-            <div class="space-y-4 mb-10 text-center sm:text-left">
-                <span class="inline-block px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-bold rounded-full uppercase tracking-wider">Style 01</span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">コブラ編み（平編み / Solomon Knot）</h1>
-                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                    パラコードクラフトのすべての基礎となる、最も人気のある定番の編み方です。平坦で強度の高い仕上がりになるため、普段使いからアウトドア用アクセサリーまで最も多様に使われます。
-                </p>
-            </div>
-
-            <!-- 基本ステータス ＆ 計算ツール -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div class="bg-brand-beige-mid/40 p-6 rounded-2xl border border-brand-beige-mid space-y-4">
-                    <h3 class="text-lg font-bold text-brand-green-deep border-b border-brand-beige-mid pb-2">基本データ</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">難易度</span>
-                            <span class="text-base font-bold text-brand-green-deep">★☆☆ (初心者向け)</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">適した作品</span>
-                            <span class="text-base font-bold text-brand-green-deep">キーホルダー・ブレスレット</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">使用コードの目安</span>
-                            <span class="text-base font-bold text-brand-green-deep">仕上がり長さの「約8倍」</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">仕上がりの厚み</span>
-                            <span class="text-base font-bold text-brand-green-deep">約1.0cm（フラット形）</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 長さシミュレーター -->
-                <div class="bg-brand-green-deep text-brand-beige-light p-6 rounded-2xl shadow-md space-y-4">
-                    <h3 class="text-lg font-bold text-brand-beige-mid border-b border-brand-green-deep/50 pb-2">簡単！コード長さ計算機</h3>
-                    <p class="text-xs text-brand-beige-mid/80 font-light">作りたいアクセサリーの「仕上がり寸法」を入力すると、必要なパラコード（編み紐）の長さ目安を自動で計算します。</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">仕上がりサイズ (cm)</label>
-                            <input type="number" id="cobra-input" value="15" min="1" max="150" class="w-full bg-brand-green-dark text-brand-beige-light border border-brand-green-deep px-3 py-2 rounded focus:outline-none focus:border-brand-beige-dark font-bold">
-                        </div>
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">必要なコード量</label>
-                            <div class="text-xl sm:text-2xl font-bold text-brand-beige-mid"><span id="cobra-result">1.50</span> <span class="text-xs">メートル</span></div>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-brand-beige-mid/60 font-light">※焼き止め・調整用として別途 30cm 程度の余りを加算しています。</p>
-                </div>
-            </div>
-
-            <!-- 編み方図解ステップ -->
-            <div class="space-y-8 mb-12">
-                <h3 class="text-xl font-bold text-brand-green-deep border-b-2 border-brand-green-deep/10 pb-2">ステップ解説（4ステップで完成）</h3>
-                
-                <!-- ステップ1 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">01</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">最初のセッティング</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            仕上がり寸法（例えば腕周り15cmなど）の「芯（真ん中のコード）」を作ります。別の長い編み紐を中心部で均等に分け、芯コードの「下側」へ真横にくぐらせて配置します。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ2 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">02</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">左紐で「４」の字を作る</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            左側の編み紐を、芯コードの「上」をまたぐようにして右側へ流します（数字の「4」の形を作るイメージです）。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ3 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">03</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">右紐を左側の輪へ通す</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            右側の編み紐を、流してきた左紐の「上」に通し、さらに芯コードの「下」を完全にくぐらせて、左側にできた「4」の字の輪の内側から手前に引き抜きます。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ4 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">04</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">引き締め、そして逆側へ</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            左右の紐を等しい力で引っ張り、きゅっと引き締めます。これでハーフノットが完成です。次回は、まったく同じステップを**「右側開始（右紐で『4』を左右反転して作る）」**で行います。これを左右交互に繰り返すことでコブラ編みになります。
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 美しく仕上げるプロのコツ -->
-            <div class="bg-brand-beige-mid/30 p-8 rounded-3xl border border-brand-beige-mid">
-                <h4 class="text-lg font-bold text-brand-green-deep mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-brand-beige-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                    美しく編み上げるための「焼き止め」とコツ
-                </h4>
-                <ul class="list-disc pl-5 text-sm text-brand-charcoal space-y-2 leading-relaxed font-light">
-                    <li><strong>引き締め強度を揃える：</strong> 毎回引っ張る強さを一定に保つことで、編み目の幅が美しく揃います。特に端に行くにつれて緩みやすくなるので注意しましょう。</li>
-                    <li><strong>焼き止めの極意：</strong> 編み終わったら、余った紐を2mmほど残してカットします。ライターの炎の「青い部分」を近づけて溶かし、すばやくハサミの金属のハラ（平らな部分）を押し付けて平らに固定すると、滑らかで綺麗な焼き止めが可能です。</li>
-                </ul>
-            </div>
+            
         </div>
-    </div>
+    </section>
 
-    <!-- ==================== 詳細画面 2: スネークノット (Snake Weaving Detail) ==================== -->
-    <div id="detail-snake-view" class="hidden min-h-screen bg-brand-beige-light py-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- パンくずリスト & 戻るボタン -->
-            <nav class="flex items-center justify-between mb-8 pb-4 border-b border-brand-beige-mid">
-                <div class="flex items-center space-x-2 text-xs sm:text-sm text-brand-beige-dark font-medium">
-                    <a href="#" class="hover:text-brand-green-deep transition-colors">ホーム</a>
-                    <span>/</span>
-                    <a href="#weaving" class="hover:text-brand-green-deep transition-colors">編み方紹介</a>
-                    <span>/</span>
-                    <span class="text-brand-green-deep font-semibold">スネークノット詳細</span>
-                </div>
-                <a href="#" class="inline-flex items-center text-xs sm:text-sm font-bold text-brand-green-deep hover:text-brand-beige-dark transition-colors">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    ホームに戻る
-                </a>
-            </nav>
-
-            <!-- タイトル & 概要 -->
-            <div class="space-y-4 mb-10 text-center sm:text-left">
-                <span class="inline-block px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-bold rounded-full uppercase tracking-wider">Style 02</span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">スネークノット（蛇結び / Snake Knot）</h1>
-                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                    立体的な「丸紐」に仕上がる、スッキリと洗練された編み方。コード全体を一定のうねりを保たせながら編み連ねることで、適度な柔軟性と厚みが生まれ、スマホストラップのコード部分やジッパータブなどに重宝します。
-                </p>
-            </div>
-
-            <!-- 基本ステータス ＆ 計算ツール -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div class="bg-brand-beige-mid/40 p-6 rounded-2xl border border-brand-beige-mid space-y-4">
-                    <h3 class="text-lg font-bold text-brand-green-deep border-b border-brand-beige-mid pb-2">基本データ</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">難易度</span>
-                            <span class="text-base font-bold text-brand-green-deep">★★☆ (少し練習が必要)</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">適した作品</span>
-                            <span class="text-base font-bold text-brand-green-deep">スマホストラップ・ジッパータブ</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">使用コードの目安</span>
-                            <span class="text-base font-bold text-brand-green-deep">仕上がり長さの「約6倍」</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">仕上がりの厚み</span>
-                            <span class="text-base font-bold text-brand-green-deep">約0.8cm（円筒丸形）</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 長さシミュレーター -->
-                <div class="bg-brand-green-deep text-brand-beige-light p-6 rounded-2xl shadow-md space-y-4">
-                    <h3 class="text-lg font-bold text-brand-beige-mid border-b border-brand-green-deep/50 pb-2">簡単！コード長さ計算機</h3>
-                    <p class="text-xs text-brand-beige-mid/80 font-light">作りたいアクセサリーの「仕上がり寸法」を入力すると、必要なパラコード（編み紐）の長さ目安を自動で計算します。</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">仕上がりサイズ (cm)</label>
-                            <input type="number" id="snake-input" value="120" min="1" max="300" class="w-full bg-brand-green-dark text-brand-beige-light border border-brand-green-deep px-3 py-2 rounded focus:outline-none focus:border-brand-beige-dark font-bold">
-                        </div>
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">必要なコード量</label>
-                            <div class="text-xl sm:text-2xl font-bold text-brand-beige-mid"><span id="snake-result">7.40</span> <span class="text-xs">メートル</span></div>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-brand-beige-mid/60 font-light">※ショルダーストラップ用の余裕を加味し、別途 20cm 程度を加算しています。</p>
-                </div>
-            </div>
-
-            <!-- 編み方図解ステップ -->
-            <div class="space-y-8 mb-12">
-                <h3 class="text-xl font-bold text-brand-green-deep border-b-2 border-brand-green-deep/10 pb-2">ステップ解説（4ステップで完成）</h3>
-                
-                <!-- ステップ1 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">01</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">折り返してループを作る</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            コードを二つ折りにし、頂部にループ（カラビナや金具を通す隙間）を作ります。左側の紐が手前（上側）に交差するように置きます。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ2 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">02</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">右紐の取り回し</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            右側のコードを持ち上げ、左コードの「裏（奥側）」を左方向にぐるりとくぐらせます。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ3 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">03</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">輪のくぐらせ方</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            今度は左側のコードを掴み、右コードが先ほど作った新しい輪っかの「裏（奥側）」を通して引き、自分自身の「上側（手前）」のループの内側へ通します。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ4 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">04</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">締め込みと繰り返しのポイント</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            結び目の形が対称（ふたつのS字が絡み合うような形）になっていることを確認しながら、それぞれの紐の端を徐々に引いて優しく締め込みます。これを繰り返すと、丸くて美しいヘビの鱗状の結びが仕上がります。
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 美しく仕上げるプロのコツ -->
-            <div class="bg-brand-beige-mid/30 p-8 rounded-3xl border border-brand-beige-mid">
-                <h4 class="text-lg font-bold text-brand-green-deep mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-brand-beige-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                    美しく編み上げるための「スネーク」のコツ
-                </h4>
-                <ul class="list-disc pl-5 text-sm text-brand-charcoal space-y-2 leading-relaxed font-light">
-                    <li><strong>テンションの均一化：</strong> スネークノットは引き締め加減に非常に左右されやすい編み方です。ゆるく締めすぎるとバラつき、強く締めすぎると編み目が潰れてしまいます。「優しくしっかりと定着させる」一定の感覚を掴むのが綺麗に魅せる秘訣です。</li>
-                    <li><strong>2色ミックスの楽しさ：</strong> 異なる2本のコードをジョイント（熱融着）してからスネークノットを編むと、螺旋状（らせん）の美しいバイカラーのコードが完成します。</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== 詳細画面 3: フィッシュテール (Fishtail Weaving Detail) ==================== -->
-    <div id="detail-fishtail-view" class="hidden min-h-screen bg-brand-beige-light py-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- パンくずリスト & 戻るボタン -->
-            <nav class="flex items-center justify-between mb-8 pb-4 border-b border-brand-beige-mid">
-                <div class="flex items-center space-x-2 text-xs sm:text-sm text-brand-beige-dark font-medium">
-                    <a href="#" class="hover:text-brand-green-deep transition-colors">ホーム</a>
-                    <span>/</span>
-                    <a href="#weaving" class="hover:text-brand-green-deep transition-colors">編み方紹介</a>
-                    <span>/</span>
-                    <span class="text-brand-green-deep font-semibold">フィッシュテール詳細</span>
-                </div>
-                <a href="#" class="inline-flex items-center text-xs sm:text-sm font-bold text-brand-green-deep hover:text-brand-beige-dark transition-colors">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    ホームに戻る
-                </a>
-            </nav>
-
-            <!-- タイタイトル & 概要 -->
-            <div class="space-y-4 mb-10 text-center sm:text-left">
-                <span class="inline-block px-3 py-1 bg-brand-green-deep/10 text-brand-green-deep text-xs font-bold rounded-full uppercase tracking-wider">Style 03</span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-green-deep">フィッシュテール（フィッシュテール編み）</h1>
-                <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                    魚の骨や尾ヒレのように繊細でフラットな織り目が特徴の上品な編み方。コブラ編みよりスマートに織り上がるため、手首へのフィット感が良く、ブレスレットや時計ベルト、ペットの首輪に極上のフィット感を提供します。
-                </p>
-            </div>
-
-            <!-- 基本ステータス ＆ 計算ツール -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div class="bg-brand-beige-mid/40 p-6 rounded-2xl border border-brand-beige-mid space-y-4">
-                    <h3 class="text-lg font-bold text-brand-green-deep border-b border-brand-beige-mid pb-2">基本データ</h3>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">難易度</span>
-                            <span class="text-base font-bold text-brand-green-deep">★★☆ (中級者向け)</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">適した作品</span>
-                            <span class="text-base font-bold text-brand-green-deep">首輪（カラー）・時計ベルト</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">使用コードの目安</span>
-                            <span class="text-base font-bold text-brand-green-deep">仕上がり長さの「約7倍」</span>
-                        </div>
-                        <div>
-                            <span class="block text-xs text-brand-beige-dark font-semibold">仕上がりの厚み</span>
-                            <span class="text-base font-bold text-brand-green-deep">約0.6cm（スマート薄形）</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 長さシミュレーター -->
-                <div class="bg-brand-green-deep text-brand-beige-light p-6 rounded-2xl shadow-md space-y-4">
-                    <h3 class="text-lg font-bold text-brand-beige-mid border-b border-brand-green-deep/50 pb-2">簡単！コード長さ計算機</h3>
-                    <p class="text-xs text-brand-beige-mid/80 font-light">作りたいアクセサリーの「仕上がり寸法」を入力すると、必要なパラコード（編み紐）の長さ目安を自動で計算します。</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">仕上がりサイズ (cm)</label>
-                            <input type="number" id="fish-input" value="25" min="1" max="150" class="w-full bg-brand-green-dark text-brand-beige-light border border-brand-green-deep px-3 py-2 rounded focus:outline-none focus:border-brand-beige-dark font-bold">
-                        </div>
-                        <div class="w-1/2">
-                            <label class="block text-xs text-brand-beige-mid font-semibold mb-1">必要なコード量</label>
-                            <div class="text-xl sm:text-2xl font-bold text-brand-beige-mid"><span id="fish-result">2.00</span> <span class="text-xs">メートル</span></div>
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-brand-beige-mid/60 font-light">※端末の調整・焼き止め用のロスとして、別途 25cm 程度を加算しています。</p>
-                </div>
-            </div>
-
-            <!-- 編み方図解ステップ -->
-            <div class="space-y-8 mb-12">
-                <h3 class="text-xl font-bold text-brand-green-deep border-b-2 border-brand-green-deep/10 pb-2">ステップ解説（4ステップで完成）</h3>
-                
-                <!-- ステップ1 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">01</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">ベースの芯地セット</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            仕上がりサイズの「2本の芯」を準備します。バックルなどの金具を通し、左右に開いた2本の紐（長い余り）がある状態にします。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ2 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">02</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">外側から右紐をくぐらす</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            右側の編み紐を持ち、2本の「芯の真ん中」の隙間に上から通し、再びそのまま右側の外へと引き抜きます。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ3 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">03</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">外側から左紐をくぐらす</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            今度は左側の編み紐を持ち、2本の芯コードの「真ん中（中心）」の隙間へ上から通し、今度は左側へ引き抜きます。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- ステップ4 -->
-                <div class="bg-brand-beige-light p-6 rounded-2xl border border-brand-beige-mid flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-full md:w-1/4 flex flex-col items-center">
-                        <span class="text-xs font-bold text-brand-beige-dark uppercase">Step</span>
-                        <span class="text-5xl font-serif font-bold text-brand-green-deep">04</span>
-                    </div>
-                    <div class="w-full md:w-3/4 space-y-2">
-                        <h4 class="text-lg font-bold text-brand-green-deep">整えと「目詰め」</h4>
-                        <p class="text-sm text-brand-charcoal leading-relaxed font-light">
-                            左右を交互に1回ずつクロスさせ、上方向へ編み目をスライドして「目をギュッと詰める」ようにして揃えていきます。繰り返すことで、きめ細かく優雅なフィッシュテールが姿を現します。
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 美しく仕上げるプロのコツ -->
-            <div class="bg-brand-beige-mid/30 p-8 rounded-3xl border border-brand-beige-mid">
-                <h4 class="text-lg font-bold text-brand-green-deep mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-brand-beige-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                    美しく編み上げるための「フィッシュテール」のコツ
-                </h4>
-                <ul class="list-disc pl-5 text-sm text-brand-charcoal space-y-2 leading-relaxed font-light">
-                    <li><strong>目の詰まり具合の管理：</strong> 編み目が上下にスカスカになってしまうと不恰好になります。2〜3往復編むごとに、親指の爪を使って上方向にキュッキュッと編み目を押し詰めるように成型するときれいに見えます。</li>
-                    <li><strong>スリム仕上げ：</strong> 薄手に作れる編み方のため、ペット首輪などにする場合は中芯を柔らかめの素材にするか、やや緩めに編み上げることでストレスの少ない優しい着用感を実現できます。</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- フッター (共通) -->
-    <footer class="bg-brand-green-dark text-brand-beige-light py-16 border-t border-brand-green-deep">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
-                
-                <!-- ブランド紹介 -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-8 h-8 text-brand-beige-mid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M12 3a9 9 0 019 9M12 3a9 9 0 00-9 9M12 21a9 9 0 009-9M12 21a9 9 0 01-9-9" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                        </svg>
-                        <span class="font-bold text-xl tracking-wider text-brand-beige-light">KNOT & LOOP</span>
-                    </div>
-                    <p class="text-xs text-brand-beige-mid/70 leading-relaxed font-light max-w-sm">
-                        アウトドアテイストと日常の上品さをブレンドしたパラコードアクセサリーの個人ブランド。一本の糸から紡ぎ出される驚きと、使いやすさを追求したデザインをお届けします。
-                    </p>
-                </div>
-
-                <!-- リンク -->
-                <div>
-                    <h5 class="text-sm font-bold text-brand-beige-dark tracking-widest uppercase mb-4">NAVIGATIONS</h5>
-                    <ul class="space-y-2 text-xs text-brand-beige-mid/80 font-light">
-                        <li><a href="#about" class="hover:text-brand-beige-light transition-colors">ABOUT (パラコードについて)</a></li>
-                        <li><a href="#gallery" class="hover:text-brand-beige-light transition-colors">GALLERY (作品たち)</a></li>
-                        <li><a href="#weaving" class="hover:text-brand-beige-light transition-colors">WEAVING (様々な編み方)</a></li>
-                        <li><a href="#faq" class="hover:text-brand-beige-light transition-colors">FAQ (よくある質問)</a></li>
-                    </ul>
-                </div>
-
-                <!-- お問い合わせ簡略案内 -->
-                <div class="space-y-4">
-                    <h5 class="text-sm font-bold text-brand-beige-dark tracking-widest uppercase mb-4">CONTACT & SOCIALS</h5>
-                    <p class="text-xs text-brand-beige-mid/80 leading-relaxed font-light">
-                        お仕事のご依頼、オーダーメイドのご相談は公式<a href="https://www.instagram.com/happydesign0901_ai/" target="_blank" rel="noopener noreferrer" class="text-brand-beige-light font-semibold underline hover:text-brand-beige-mid transition-colors">InstagramのDM</a>より承っております。最新の制作情報も更新しています。
-                    </p>
-                    <div class="flex items-center gap-4 pt-2">
-                        <!-- Instagram Icon -->
-                        <a href="https://www.instagram.com/happydesign0901_ai/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full bg-brand-green-deep hover:bg-brand-beige-dark text-brand-beige-light transition-all duration-300" aria-label="Instagram">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                            </svg>
-                        </a>
-                        <!-- Mail Icon / SVG -->
-                        <a href="#" class="p-2.5 rounded-full bg-brand-green-deep hover:bg-brand-beige-dark text-brand-beige-light transition-all duration-300" aria-label="Mail Address">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- コピーライト -->
-            <div class="mt-12 pt-8 border-t border-brand-green-deep/30 text-center text-[10px] text-brand-beige-mid/50 tracking-widest font-light">
-                <p>&copy; 2026 KNOT & LOOP. All Rights Reserved. Created with Handcraft Spirit.</p>
-            </div>
-        </div>
+    <footer>
+        <p>&copy; 2026 Your Name. All Rights Reserved.</p>
     </footer>
 
-    <!-- インタラクション & ルーティング用 JavaScript -->
-    <script>
-        // ==================== [1] SPA ハッシュルーティング ====================
-        function handleRouting() {
-            const hash = window.location.hash;
-            const homeView = document.getElementById('homepage-view');
-            const detailCobra = document.getElementById('detail-cobra-view');
-            const detailSnake = document.getElementById('detail-snake-view');
-            const detailFishtail = document.getElementById('detail-fishtail-view');
-
-            // すべて表示を一旦非表示に初期化
-            homeView.classList.add('hidden');
-            detailCobra.classList.add('hidden');
-            detailSnake.classList.add('hidden');
-            detailFishtail.classList.add('hidden');
-
-            // ハッシュ値に基づいて画面を出し分け
-            if (hash === '#/weaving/cobra') {
-                detailCobra.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-            } else if (hash === '#/weaving/snake') {
-                detailSnake.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-            } else if (hash === '#/weaving/fishtail') {
-                detailFishtail.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'instant' });
-            } else {
-                // ホームビュー（初期画面）を表示
-                homeView.classList.remove('hidden');
-                
-                // もし特定のアンカー（#about, #galleryなど）が指定されている場合はスムーズスクロール
-                if (hash && !hash.startsWith('#/')) {
-                    const targetElement = document.querySelector(hash);
-                    if (targetElement) {
-                        // 画面切り替えが確実に完了したタイミングでスクロールをかける
-                        setTimeout(() => {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
-                        }, 50);
-                    }
-                }
-            }
-        }
-
-        // ルートの変更と初期ロード時に監視を実行
-        window.addEventListener('hashchange', handleRouting);
-        window.addEventListener('DOMContentLoaded', handleRouting);
-
-
-        // ==================== [2] 長さ自動計算シミュレーター ====================
-        // A. コブラ編み計算 (芯に対して編み紐の長さ = 仕上がり寸法 × 8 ＋ 30cmの余り)
-        const cobraInput = document.getElementById('cobra-input');
-        const cobraResult = document.getElementById('cobra-result');
-        function calcCobra() {
-            const val = parseFloat(cobraInput.value) || 0;
-            const needed = ((val * 8) + 30) / 100; // cmからmへ
-            cobraResult.textContent = needed.toFixed(2);
-        }
-        cobraInput.addEventListener('input', calcCobra);
-        calcCobra(); // 初期計算
-
-        // B. スネークノット計算 (仕上がり寸法 × 6 ＋ 20cmの余り)
-        const snakeInput = document.getElementById('snake-input');
-        const snakeResult = document.getElementById('snake-result');
-        function calcSnake() {
-            const val = parseFloat(snakeInput.value) || 0;
-            const needed = ((val * 6) + 20) / 100; // cmからmへ
-            snakeResult.textContent = needed.toFixed(2);
-        }
-        snakeInput.addEventListener('input', calcSnake);
-        calcSnake(); // 初期計算
-
-        // C. フィッシュテール計算 (仕上がり寸法 × 7 ＋ 25cmの余り)
-        const fishInput = document.getElementById('fish-input');
-        const fishResult = document.getElementById('fish-result');
-        function calcFish() {
-            const val = parseFloat(fishInput.value) || 0;
-            const needed = ((val * 7) + 25) / 100; // cmからmへ
-            fishResult.textContent = needed.toFixed(2);
-        }
-        fishInput.addEventListener('input', calcFish);
-        calcFish(); // 初期計算
-
-
-        // ==================== [3] モバイルメニューの開閉 ====================
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIconOpen = document.getElementById('menu-icon-open');
-        const menuIconClose = document.getElementById('menu-icon-close');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = !mobileMenu.classList.contains('hidden');
-            if (isOpen) {
-                mobileMenu.classList.add('hidden');
-                menuIconOpen.classList.remove('hidden');
-                menuIconClose.classList.add('hidden');
-            } else {
-                mobileMenu.classList.remove('hidden');
-                menuIconOpen.classList.add('hidden');
-                menuIconClose.classList.remove('hidden');
-            }
-        });
-
-        // モバイルナビのリンクを押したら閉じる
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                menuIconOpen.classList.remove('hidden');
-                menuIconClose.classList.add('hidden');
-            });
-        });
-
-
-        // ==================== [4] Q&Aアコーディオン ====================
-        const faqBtns = document.querySelectorAll('.faq-toggle-btn');
-        faqBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const parent = btn.parentElement;
-                const content = parent.querySelector('.faq-content');
-                const icon = btn.querySelector('.faq-icon');
-                
-                const isHidden = content.classList.contains('hidden');
-                
-                // すべて一度リセットして閉じる
-                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
-                document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
-                
-                // クリックされたものが非表示だった場合は開く
-                if (isHidden) {
-                    content.classList.remove('hidden');
-                    icon.classList.add('rotate-180');
-                }
-            });
-        });
-
-        // スクロール時にヘッダーに薄い影を付与
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('shadow-md', 'bg-brand-beige-light');
-            } else {
-                header.classList.remove('shadow-md');
-            }
-        });
-    </script>
 </body>
 </html>
